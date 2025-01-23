@@ -6,6 +6,9 @@ const port = process.env.EXPRESS_PORT;
 // IMPORTO IL ROUTER
 const appRouters = require("./routers/appRouters") 
 
+// MIDDLEWARE PER RENDERE ACCESSIBILE LA CARTELLA PUBBLIC
+app.use(express.static("public"));
+
 // ROTTE
 app.use("/app", appRouters);
 
