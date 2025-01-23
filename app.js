@@ -3,10 +3,11 @@ const express = require("express");
 const app = express();
 const port = process.env.EXPRESS_PORT;
 
+// IMPORTO IL ROUTER
+const appRouters = require("./routers/appRouters") 
+
 // ROTTE
-app.get("/", (req, res) => {
-    res.send("Hello world by first route");
-});
+app.use("/app", appRouters);
 
 
 // PORTA IN ASCOLTO DEL SERVER

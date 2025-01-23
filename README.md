@@ -4,8 +4,8 @@ Ciao ragazzi, è ora di mettere alla prova le vostre conoscenze iniziando a cost
 - Utilizzando il file in allegato, **creiamo un database** con MySQL Workbench ✅
 - Creiamo una **nuova applicazione Express** ✅
 - **Colleghiamo l’app al db** e verifichiamo che tutto funzioni ✅
-- Prepariamo **una rotta index** per ottenere la lista dei film
-- Prepariamo **una rotta show** per ottenere i dettagli di un singolo film e le sue recensioni
+- Prepariamo **una rotta index** per ottenere la lista dei film ✅
+- Prepariamo **una rotta show** per ottenere i dettagli di un singolo film e le sue recensioni✅
 
 ## Bonus
 - Inserire delle immagini nel progetto express e dunque nel db
