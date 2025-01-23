@@ -1,0 +1,16 @@
+{
+  "name": "webapp-express",
+  "version": "1.0.0",
+  "description": "Ciao ragazzi, è ora di mettere alla prova le vostre conoscenze iniziando a costruire la vostra prima app completa! Ecco i primi step\r - Utilizzando il file in allegato, **creiamo un database** con MySQL Workbench ✅\r - Creiamo una **nuova applicazione Express**\r - **Colleghiamo l’app al db** e verifichiamo che tutto funzioni\r - Prepariamo **una rotta index** per ottenere la lista dei film\r - Prepariamo **una rotta show** per ottenere i dettagli di un singolo film e le sue recensioni",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --env-file=.env app.js",
+    "dev": "node --env-file=.env --watch app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
+  }
+}
