@@ -28,10 +28,12 @@ const index = (req, res) => {
 
 // ROTTA SHOW
 const show = (req, res) => {
-    // PRELEVO ID
-    const id = req.params.id;
+
+    // PRELEVO SLUG
+    const slug = req.params.slug
+
     // QUERY PER UN SOLO FILM
-    const sql = "SELECT * FROM `movies` WHERE `id` = ?";
+    const sql = "SELECT * FROM `movies` WHERE `slug` = ?";
 
     // QUERY PER LE RECENSIONI DI UN SOLO FILM
     const sqlReviews = `
@@ -39,11 +41,11 @@ const show = (req, res) => {
     FROM reviews
     JOIN MOVIES
     ON movies.id = reviews.movie_id
-    WHERE movies.id = ?
+    WHERE movies.slug = ?
     `
 
     // CHIAMATA AL DB
-    dataBase.query(sql, [id], (err, results) => {
+    dataBase.query(sql, [slug], (err, results) => {
 
         // CONTROLLA EVENTUALI ERRORI DEL SERVER
         if (err) {
@@ -62,7 +64,7 @@ const show = (req, res) => {
         } 
         
         // SE C'è CORRISPONDENZA FA LA CHIAMATA AL DB PER LE RECENSIONI
-        dataBase.query(sqlReviews, [id], (err, reviews) => {
+        dataBase.query(sqlReviews, [slug], (err, reviews) => {
             if (err) {
                 return res.status(500).json({
                     status: "Fail",

@@ -4,6 +4,6 @@ const appController = require("../controllers/appController")
 
 router.get("/", appController.index)
 
-router.get("/:id", appController.show)
+router.get("/:slug", appController.show)
 
 module.exports = router;
