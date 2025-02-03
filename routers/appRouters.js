@@ -6,4 +6,6 @@ router.get("/", appController.index)
 
 router.get("/:slug", appController.show)
 
+router.post("/:id/reviews", appController.storeReview);
+
 module.exports = router;

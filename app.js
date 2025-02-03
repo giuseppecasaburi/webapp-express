@@ -10,6 +10,8 @@ const appRouters = require("./routers/appRouters")
 // IMPORTO CORS PER POTER PERMETTERE IL COLLEGAMENTO CON LE CHIAMATE NEL FE
 app.use(cors());
 
+app.use(express.json())
+
 // MIDDLEWARE PER RENDERE ACCESSIBILE LA CARTELLA PUBBLIC
 app.use(express.static("public"));
 

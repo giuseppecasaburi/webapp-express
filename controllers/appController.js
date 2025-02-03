@@ -1,13 +1,33 @@
 const dataBase = require("../data/dbConnection");
 
 // ROTTA INDEX
-const index = (req, res) => {
-    
+const index = (req, res, next) => {
+    const filters = req.query
+
     // QUERY PER INTERROGARE IL DATABASE
-    const sql = "SELECT * FROM `movies`";
+    let sql = "SELECT * FROM `movies`";
+    const params = [];
+    const conditions = [];
+
+    if(filters.search) {
+        // AGGIUNGO ALLA REQUEST IL FILTRO
+        conditions.push("title LIKE ?");
+        params.push(`${filters.search}`)
+    };
+
+    for (const key in req.query) {
+        if (key !== "search") {
+            conditions.push(`${key} = =`);
+            params.push(req.query[key]);
+        }
+    };
+
+    if (conditions.length > 0) {
+        sql += `WHERE ${conditions.join(" AND ")}`
+    };
 
     // CHIAMATA AL DB
-    dataBase.query(sql, (err, movies) => {
+    dataBase.query(sql, params, (err, movies) => {
         
         // VERIFICA DI EVENTUALI ERRORI
         if (err) {
@@ -83,7 +103,81 @@ const show = (req, res) => {
     });
 }
 
+const storeReview = (req, res, next) => {
+    // PRELEVO ID
+    const movieId = req.params.id;
+
+    // PRELEVO IL BODY
+    const {name, vote, text} = req.body;
+
+    // VALIDAZIONE
+    if(isNaN(vote) || vote < 0 || vote > 5) {
+        return res.status(400).json({
+            status: "Fail",
+            message: "Il voto deve essere un valore numerico compreso tra 0 e 5"
+        });
+    };
+
+    if(name.length < 3) {
+        return res.status(400).json({
+            status: "Fail",
+            message: "Il nome deve avere più di 3 caratteri"
+        });
+    };
+
+    if(text && text.length > 0 && text.length < 5) {
+        return res.status(400).json({
+            status: "Fail",
+            message: "Il testo deve avere almeno 6 caratteri"
+        })
+    }
+
+    // QUERY E CHIAMATA PER VERIFICARE L'ESISTENZA DEL FILM
+    const movieSql = `
+    SELECT *
+    FROM movies
+    WHERE id = ?
+    `
+
+    dataBase.query(movieSql, [movieId], (err, results) => {
+        if (err) {
+            return res.status(500).json({
+                status: "Fail",
+                message: "Internal error server."
+            })
+        }
+
+        if (results.length == 0) {
+            return res.status(404).json({
+                status: "Fail",
+                message: "Movie not found"
+            })
+        }
+    })
+
+    // QUERY E CHIAMATA PER AGGIUNGERE UNA NUOVA REVIEW
+    const sql = `
+    INSERT INTO reviews(movie_id, name, vote, text)
+    VALUES (?, ?, ?, ?)
+    `
+
+    dataBase.query(sql, [movieId, name, vote, text], (err, results) => {
+        if (err) {
+            return res.status(500).json({
+                status: "Fail",
+                message: "Internal error server."
+            })
+        }
+
+        res.status(201).json({
+            status: "Success",
+            message: "Recensione aggiunta con successo"
+        })
+    })
+}
+
 module.exports = {
     index,
-    show
+    show,
+    storeReview
 }
